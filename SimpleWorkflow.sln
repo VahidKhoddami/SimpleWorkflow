@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30611.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleWorkflow.UnitTests", "SimpleWorkflow.UnitTests\SimpleWorkflow.UnitTests.csproj", "{C20D2C57-6A06-4210-B3A4-35ED0B065091}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleWorkflow.Core", "SimpleWorkflow.Core\SimpleWorkflow.Core.csproj", "{F485C313-7A3C-4B89-A086-AAA4531DB8AE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C20D2C57-6A06-4210-B3A4-35ED0B065091}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C20D2C57-6A06-4210-B3A4-35ED0B065091}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C20D2C57-6A06-4210-B3A4-35ED0B065091}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C20D2C57-6A06-4210-B3A4-35ED0B065091}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F485C313-7A3C-4B89-A086-AAA4531DB8AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F485C313-7A3C-4B89-A086-AAA4531DB8AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F485C313-7A3C-4B89-A086-AAA4531DB8AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F485C313-7A3C-4B89-A086-AAA4531DB8AE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {80CF084B-B0B4-4274-BB0E-CC8BCC0F53CC}
+	EndGlobalSection
+EndGlobal
