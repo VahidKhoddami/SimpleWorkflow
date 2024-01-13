@@ -234,23 +234,23 @@ namespace SimpleWorkflow.UnitTests
 
         public class FormSubmission : TransitionItem
         {
-            public override string Name => "ثبت فرم اولیه";
+            public override string Name => "Initial submission";
             public override int Value => 1;
         }
 
         public class ExpertReview : TransitionItem
         {
-            public override string Name => "ثبت نظر کاربر خبره";
+            public override string Name => "Expert review submission";
             public override int Value => 2;
         }
         public class SupervisorReview : TransitionItem
         {
-            public override string Name => "ثبت نظر ناظر";
+            public override string Name => "Supervisor review submission";
             public override int Value => 3;
         }
         public class End : TransitionItem
         {
-            public override string Name => "پایان جریان کار";
+            public override string Name => "Completion";
             public override int Value => 4;
         }
 
@@ -273,25 +273,25 @@ namespace SimpleWorkflow.UnitTests
         }
         public class ApproveCondition : TransitionItem
         {
-            public override string Name => "تایید";
+            public override string Name => "Approve";
             public override int Value => 1;
         }
 
         public class RejectCondition : TransitionItem
         {
-            public override string Name => "رد";
+            public override string Name => "Reject";
             public override int Value => 2;
         }
 
         public class ReturnCondition : TransitionItem
         {
-            public override string Name => "بازگشت جهت اصلاح";
+            public override string Name => "Return";
             public override int Value => 3;
         }
 
         public class ReturnToInitialStateCondition : TransitionItem
         {
-            public override string Name => "بازگشت به مرحله اول";
+            public override string Name => "Return to initial state";
             public override int Value => 4;
         }
     }
