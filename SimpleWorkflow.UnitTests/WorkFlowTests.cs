@@ -55,7 +55,7 @@ namespace SimpleWorkflow.UnitTests
 
             var nextState = wf.GetNextState(q => q.ExpertReview, q => q.Approve);
 
-            Assert.AreEqual(new SupervisorReview(), nextState);
+            Assert.That(nextState, Is.EqualTo(new SupervisorReview()));
         }
 
         [Test]
@@ -65,7 +65,7 @@ namespace SimpleWorkflow.UnitTests
 
             var nextState = wf.GetNextState(q => q.ExpertReview, q => q.Reject);
 
-            Assert.AreEqual(null, nextState);
+            Assert.That(nextState, Is.EqualTo(null));
 
         }
 
@@ -76,7 +76,7 @@ namespace SimpleWorkflow.UnitTests
 
             var nextState = wf.GetNextState(q => q.FormSubmission, q => q.Reject);
 
-            Assert.AreEqual(null, nextState);
+            Assert.That(nextState, Is.EqualTo(null));
 
         }
 
@@ -87,7 +87,7 @@ namespace SimpleWorkflow.UnitTests
 
             var nextState = wf.GetNextState(null, q => q.Reject);
 
-            Assert.AreEqual(null, nextState);
+            Assert.That(nextState, Is.EqualTo(null));
 
         }
 
@@ -98,7 +98,7 @@ namespace SimpleWorkflow.UnitTests
 
             var nextState = wf.GetNextState(q => q.FormSubmission, null);
 
-            Assert.AreEqual(null, nextState);
+            Assert.That(nextState, Is.EqualTo(null));
 
         }
 
@@ -109,7 +109,7 @@ namespace SimpleWorkflow.UnitTests
 
             var nextState = wf.GetNextState(2, 1);
 
-            Assert.AreEqual(3, nextState.Value);
+            Assert.That(nextState.Value, Is.EqualTo(3));
 
         }
 
@@ -120,7 +120,7 @@ namespace SimpleWorkflow.UnitTests
 
             var conditions = wf.GetConditions();
 
-            Assert.AreEqual(Enumerable.Empty<TransitionItem>(), conditions);
+            Assert.That(conditions, Is.EqualTo(Enumerable.Empty<TransitionItem>()));
 
         }
 
@@ -131,7 +131,7 @@ namespace SimpleWorkflow.UnitTests
 
             var conditions = wf.GetConditions();
 
-            Assert.IsTrue(conditions.Count() == 3);
+            Assert.That(conditions.Count() == 3,Is.True);
             Assert.That(
                 new TransitionItem[] { new ApproveCondition()
                                      , new RejectCondition()
@@ -147,7 +147,7 @@ namespace SimpleWorkflow.UnitTests
 
             var conditions = wf.GetConditions(q => q.ExpertReview);
 
-            Assert.AreEqual(2, conditions.Count());
+            Assert.That(conditions.Count(), Is.EqualTo(2));
             Assert.That(
                 new TransitionItem[] { new ApproveCondition()
                                      , new ReturnCondition()}
@@ -162,7 +162,7 @@ namespace SimpleWorkflow.UnitTests
 
             var state = wf.GetStateItem(2);
 
-            Assert.AreEqual(TestWFStates.Instance.ExpertReview, state);
+            Assert.That(state, Is.EqualTo(TestWFStates.Instance.ExpertReview));
         }
 
         [Test]
@@ -172,7 +172,7 @@ namespace SimpleWorkflow.UnitTests
 
             var command = wf.GetCommandItem(3);
 
-            Assert.AreEqual(WorkFlowConditions.Instance.ReturnBack, command);
+            Assert.That(command, Is.EqualTo(WorkFlowConditions.Instance.ReturnBack));
         }
 
         private WorkFlow<TestWFStates, WorkFlowConditions> CreateSampleWorkFow()
