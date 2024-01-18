@@ -4,8 +4,8 @@ using System.Linq;
 
 namespace SimpleWorkflow.Core
 {
-    public class WorkFlow<TWFStates, TWFConditions> where TWFStates : new()
-                                                   where TWFConditions : new()
+    public class WorkFlow<TWFStates, TWFCommands> where TWFStates : new()
+                                                   where TWFCommands : new()
     {
 
         private IDictionary<WorkFlowTransition, WorkFlowTransition> _workFlow;
@@ -15,21 +15,21 @@ namespace SimpleWorkflow.Core
             _workFlow = workflow;
         }
 
-        public TransitionItem GetNextState(Func<TWFStates, TransitionItem> currentStateExp, Func<TWFConditions, TransitionItem> conditionExp)
+        public TransitionItem GetNextState(Func<TWFStates, TransitionItem> currentStateExp, Func<TWFCommands, TransitionItem> commandExp)
         {
             if (_workFlow == null)
                 return default;
 
-            if (conditionExp == null)
+            if (commandExp == null)
                 return default;
 
             if (currentStateExp == null)
                 return default;
 
-            var condition = conditionExp(new TWFConditions());
+            var command = commandExp(new TWFCommands());
             var currentState = currentStateExp(new TWFStates());
 
-            var flowItem = new WorkFlowTransition { CurrentState = currentState, Command = condition };
+            var flowItem = new WorkFlowTransition { CurrentState = currentState, Command = command };
 
             if (NextStateNotDefined(flowItem))
                 return default;
@@ -38,12 +38,12 @@ namespace SimpleWorkflow.Core
 
         }
 
-        public TransitionItem GetNextState(int state, int condition)
+        public TransitionItem GetNextState(int state, int command)
         {
             if (_workFlow == null)
                 return default;
 
-            return _workFlow.Values.Where(q => q.CurrentState.Value == state && q.Command.Value == condition)
+            return _workFlow.Values.Where(q => q.CurrentState.Value == state && q.Command.Value == command)
                                         .Select(q => q.NextState)
                                         .FirstOrDefault();
 
@@ -76,7 +76,7 @@ namespace SimpleWorkflow.Core
             return null;
         }
 
-        public IEnumerable<TransitionItem> GetConditions(Func<TWFStates, TransitionItem> currentStateExp = null)
+        public IEnumerable<TransitionItem> GetCommands(Func<TWFStates, TransitionItem> currentStateExp = null)
         {
             if (_workFlow == null)
                 return Enumerable.Empty<TransitionItem>();

@@ -17,7 +17,7 @@ namespace SimpleWorkflow.UnitTests
         [Test]
         public void Add_WhenBuilderIsNull_ReturnException()
         {
-            var wf = new WorkFlowBuilder<TestWFStates, WorkFlowConditions>();
+            var wf = new WorkFlowBuilder<TestWFStates, WorkFlowCommands>();
 
             var ex = Assert.Throws<Exception>(() => wf.Add(null));
             Assert.That(ex.Message, Contains.Substring("builder is not defined").IgnoreCase);
@@ -25,9 +25,9 @@ namespace SimpleWorkflow.UnitTests
         }
 
         [Test]
-        public void Add_BuilderConditionNotDefined_ReturnException()
+        public void Add_BuilderCommandNotDefined_ReturnException()
         {
-            var wf = new WorkFlowBuilder<TestWFStates, WorkFlowConditions>();
+            var wf = new WorkFlowBuilder<TestWFStates, WorkFlowCommands>();
 
             var ex = Assert.Throws<Exception>(() =>
             wf.Add(q => q.From(q => q.FormSubmission)
@@ -39,7 +39,7 @@ namespace SimpleWorkflow.UnitTests
         [Test]
         public void Add_BuilderCurrentStateNotDefined_ReturnException()
         {
-            var wf = new WorkFlowBuilder<TestWFStates, WorkFlowConditions>();
+            var wf = new WorkFlowBuilder<TestWFStates, WorkFlowCommands>();
 
             var ex = Assert.Throws<Exception>(() =>
             wf.Add(q => q.If(q => q.Approve)
@@ -72,7 +72,7 @@ namespace SimpleWorkflow.UnitTests
         [Test]
         public void GetNext_WorkflowHasNoItem_ReturnNull()
         {
-            var wf = new  WorkFlowBuilder<TestWFStates, WorkFlowConditions>().Build();
+            var wf = new  WorkFlowBuilder<TestWFStates, WorkFlowCommands>().Build();
 
             var nextState = wf.GetNextState(q => q.FormSubmission, q => q.Reject);
 
@@ -92,7 +92,7 @@ namespace SimpleWorkflow.UnitTests
         }
 
         [Test]
-        public void GetNext_ConditionIsNull_ReturnNull()
+        public void GetNext_CommandIsNull_ReturnNull()
         {
             var wf = CreateSampleWorkFow();
 
@@ -103,7 +103,7 @@ namespace SimpleWorkflow.UnitTests
         }
 
         [Test]
-        public void GetNext_ProvidedWithIntegerStateAndCondition_ReturnNextStateItem()
+        public void GetNext_ProvidedWithIntegerStateAndCommand_ReturnNextStateItem()
         {
             var wf = CreateSampleWorkFow();
 
@@ -114,44 +114,44 @@ namespace SimpleWorkflow.UnitTests
         }
 
         [Test]
-        public void GetConditions_WorkflowHasNoItem_ReturnNull()
+        public void GetCommands_WorkflowHasNoItem_ReturnNull()
         {
-            var wf = new WorkFlowBuilder<TestWFStates, WorkFlowConditions>().Build();
+            var wf = new WorkFlowBuilder<TestWFStates, WorkFlowCommands>().Build();
 
-            var conditions = wf.GetConditions();
+            var commands = wf.GetCommands();
 
-            Assert.That(conditions, Is.EqualTo(Enumerable.Empty<TransitionItem>()));
+            Assert.That(commands, Is.EqualTo(Enumerable.Empty<TransitionItem>()));
 
         }
 
         [Test]
-        public void GetConditions_WorkflowHasItems_ReturnConditions()
+        public void GetCommands_WorkflowHasItems_ReturnCommands()
         {
             var wf = CreateSampleWorkFow();
 
-            var conditions = wf.GetConditions();
+            var commands = wf.GetCommands();
 
-            Assert.That(conditions.Count() == 3,Is.True);
+            Assert.That(commands.Count() == 3,Is.True);
             Assert.That(
-                new TransitionItem[] { new ApproveCondition()
-                                     , new RejectCondition()
-                                     , new ReturnCondition()}
-            , Is.EquivalentTo(conditions));
+                new TransitionItem[] { new ApproveCommand()
+                                     , new RejectCommand()
+                                     , new ReturnCommand()}
+            , Is.EquivalentTo(commands));
 
         }
 
         [Test]
-        public void GetConditions_WorkflowHasItemsAndCurrentStateIsProvided_ReturnConditionsForTheCurrentState()
+        public void GetCommands_WorkflowHasItemsAndCurrentStateIsProvided_ReturnCommandsForTheCurrentState()
         {
             var wf = CreateSampleWorkFow();
 
-            var conditions = wf.GetConditions(q => q.ExpertReview);
+            var commands = wf.GetCommands(q => q.ExpertReview);
 
-            Assert.That(conditions.Count(), Is.EqualTo(2));
+            Assert.That(commands.Count(), Is.EqualTo(2));
             Assert.That(
-                new TransitionItem[] { new ApproveCondition()
-                                     , new ReturnCondition()}
-            , Is.EquivalentTo(conditions));
+                new TransitionItem[] { new ApproveCommand()
+                                     , new ReturnCommand()}
+            , Is.EquivalentTo(commands));
 
         }
 
@@ -172,12 +172,12 @@ namespace SimpleWorkflow.UnitTests
 
             var command = wf.GetCommandItem(3);
 
-            Assert.That(command, Is.EqualTo(WorkFlowConditions.Instance.ReturnBack));
+            Assert.That(command, Is.EqualTo(WorkFlowCommands.Instance.ReturnBack));
         }
 
-        private WorkFlow<TestWFStates, WorkFlowConditions> CreateSampleWorkFow()
+        private WorkFlow<TestWFStates, WorkFlowCommands> CreateSampleWorkFow()
         {
-            return new WorkFlowBuilder<TestWFStates, WorkFlowConditions>()
+            return new WorkFlowBuilder<TestWFStates, WorkFlowCommands>()
                         .Add(wfItem => wfItem
                              .From(q => q.FormSubmission)
                              .If(q => q.Approve)
@@ -256,40 +256,40 @@ namespace SimpleWorkflow.UnitTests
 
 
 
-        public class WorkFlowConditions
+        public class WorkFlowCommands
         {
-            public static WorkFlowConditions Instance
+            public static WorkFlowCommands Instance
             {
                 get
                 {
 
-                    return new WorkFlowConditions();
+                    return new WorkFlowCommands();
                 }
             }
-            public TransitionItem Approve => new ApproveCondition();
-            public TransitionItem Reject => new RejectCondition();
-            public TransitionItem ReturnBack => new ReturnCondition();
-            public TransitionItem ReturnToInitialState => new ReturnToInitialStateCondition();
+            public TransitionItem Approve => new ApproveCommand();
+            public TransitionItem Reject => new RejectCommand();
+            public TransitionItem ReturnBack => new ReturnCommand();
+            public TransitionItem ReturnToInitialState => new ReturnToInitialStateCommand();
         }
-        public class ApproveCondition : TransitionItem
+        public class ApproveCommand : TransitionItem
         {
             public override string Name => "Approve";
             public override int Value => 1;
         }
 
-        public class RejectCondition : TransitionItem
+        public class RejectCommand : TransitionItem
         {
             public override string Name => "Reject";
             public override int Value => 2;
         }
 
-        public class ReturnCondition : TransitionItem
+        public class ReturnCommand : TransitionItem
         {
             public override string Name => "Return";
             public override int Value => 3;
         }
 
-        public class ReturnToInitialStateCondition : TransitionItem
+        public class ReturnToInitialStateCommand : TransitionItem
         {
             public override string Name => "Return to initial state";
             public override int Value => 4;

@@ -2,8 +2,8 @@
 
 namespace SimpleWorkflow.Core
 {
-    public class WorkFlowItemBuilder<TWFStates, TWFConditions> where TWFStates : new()
-                                                          where TWFConditions : new()
+    public class WorkFlowItemBuilder<TWFStates, TWFCommands> where TWFStates : new()
+                                                          where TWFCommands : new()
     {
 
         private WorkFlowTransition _wfItem;
@@ -12,14 +12,14 @@ namespace SimpleWorkflow.Core
             _wfItem = new WorkFlowTransition();
         }
 
-        public WorkFlowItemBuilder<TWFStates, TWFConditions> If(Func<TWFConditions, TransitionItem> condition)
+        public WorkFlowItemBuilder<TWFStates, TWFCommands> If(Func<TWFCommands, TransitionItem> command)
         {
-            _wfItem.Command = condition(new TWFConditions());
+            _wfItem.Command = command(new TWFCommands());
 
             return this;
         }
 
-        public WorkFlowItemBuilder<TWFStates, TWFConditions> From(Func<TWFStates, TransitionItem> currentState)
+        public WorkFlowItemBuilder<TWFStates, TWFCommands> From(Func<TWFStates, TransitionItem> currentState)
         {
             _wfItem.CurrentState = currentState(new TWFStates());
 

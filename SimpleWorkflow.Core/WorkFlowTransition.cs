@@ -11,7 +11,7 @@ namespace SimpleWorkflow.Core
 
         public override int GetHashCode()
         {
-            return ConcatCurrentStateAndCondition();
+            return ConcatCurrentStateAndCommand();
         }
 
         public override bool Equals(object obj)
@@ -22,11 +22,11 @@ namespace SimpleWorkflow.Core
 
         public bool Equals(WorkFlowTransition obj)
         {
-            return obj != null && obj.ConcatCurrentStateAndCondition() == this.ConcatCurrentStateAndCondition();
+            return obj != null && obj.ConcatCurrentStateAndCommand() == this.ConcatCurrentStateAndCommand();
         }
 
         //Returns xy like: x=1,y=2 then xy=12
-        public int ConcatCurrentStateAndCondition()
+        public int ConcatCurrentStateAndCommand()
         {
             int x = CurrentState.Value;
             int y = Command.Value;
